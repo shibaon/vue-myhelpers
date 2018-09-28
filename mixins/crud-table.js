@@ -2,7 +2,6 @@ export default {
     data() {
         return {
             cols: [['id', '#'], ['name', 'Add columns!!!']],
-            rows: [],
             count: 0,
             limit: 10,
             page: 0,
