@@ -22,8 +22,8 @@ export default {
         page: 'updateQuery',
         filter: 'updateQuery',
     },
-    async created() {
-        this.updateQuery()  
+    created() {
+        this.updateQuery()
     },
     methods: {
         updateQuery() {
