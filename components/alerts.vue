@@ -11,46 +11,48 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue'
+import { Component, Prop, Watch } from 'vue-property-decorator'
 
-const component = Vue.extend({
-    props: ['value'],
-    data() {
-        return { alerts: this.value ? this.value : this.$alerts, counter: 0 }
-    },
-    watch: {
-        value() {
-            this.alerts = this.value
-        },
-        alerts() {
-            for (const alert of this.alerts) {
-                if (alert.initialized) {
-                    continue
-                }
-                alert.initialized = true
-                setTimeout(() => {
-                    this.close(alert)
-                }, 10000)
+@Component
+export default class Alerts extends Vue {
+    private value
+    private alerts = this.$alerts
+    private counter = 0
+
+    @Watch('value')
+    private onValueChanged() {
+        this.alerts = this.value
+    }
+
+    @Watch('alerts')
+    private onAlertsChanged() {
+        for (const alert of this.alerts) {
+            if (alert.initialized) {
+                continue
             }
-        },
-    },
-    methods: {
-        remove(alert) {
-            this.alerts.splice(this.alerts.indexOf(alert), 1)
-            this.$emit('input', this.alerts)
-        },
-        close(alert) {
-            alert.hidding = true
-            this.$set(this.alerts, this.alerts.indexOf(alert), alert)
+            alert.initialized = true
             setTimeout(() => {
-                this.remove(alert)
-            }, 1000)
+                this.close(alert)
+            }, 10000)
         }
-    },
-})
+    }
 
-export default component
+    private remove(alert) {
+        this.alerts.splice(this.alerts.indexOf(alert), 1)
+        this.$emit('input', this.alerts)
+    }
+
+    private close(alert) {
+        alert.hidding = true
+        this.$set(this.alerts, this.alerts.indexOf(alert), alert)
+        setTimeout(() => {
+            this.remove(alert)
+        }, 1000)
+    }
+}
+
 export function install(Vue) {
     Vue.prototype.$alerts = []
     Vue.prototype.$addAlert = function(type, text) {
@@ -58,7 +60,7 @@ export function install(Vue) {
             this.$alerts.push({type, text})
         }
     }
-    Vue.component('alerts', component)
+    Vue.component('alerts', Alerts)
 }
 </script>
 
