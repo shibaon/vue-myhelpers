@@ -11,15 +11,18 @@ export default class extends Vue {
     protected cols: Array<[string, string]> = [['id', '#'], ['name', 'Add columns!!!']]
     protected count = 0
     protected limit = 10
-    protected page = this.$route.query.page ? parseInt(this.$route.query.page, 10) : 0
-    protected filter: { [key: string]: any } = this.$route.query.filter ? JSON.parse(this.$route.query.filter) : {}
-    protected order: [string, 'asc'|'desc'] = [this.$route.query.ob ? this.$route.query.ob : 'id', this.$route.query.od === 'asc' ? 'asc' : 'desc']
+    protected page = 0
+    protected filter: { [key: string]: any } = {}
+    protected order: [string, 'asc'|'desc'] = ['id', 'desc']
 
     get pages() {
             return Math.ceil(this.count / this.limit)
     }
 
     public created() {
+        this.page = this.$route.query.page ? parseInt(this.$route.query.page, 10) : 0
+        this.filter = this.$route.query.filter ? JSON.parse(this.$route.query.filter) : {}
+        this.order = [this.$route.query.ob ? this.$route.query.ob : 'id', this.$route.query.od === 'asc' ? 'asc' : 'desc']
         this.updateQuery()
     }
 
