@@ -8,19 +8,24 @@
 </ul>
 </template>
 
-<script>
-export default {
-    props: ['value', 'pages'],
-    data() {
-        return { page: this.value }
-    },
-    watch: {
-        value() {
-            this.page = this.value
-        },
-        page() {
-            this.$emit('input', this.page)
-        },
-    },
+<script lang="ts">
+import { Vue, Prop, Component, Watch } from 'vue-property-decorator'
+
+@Component
+export default class extends Vue {
+    @Prop()
+    private value
+    @Prop()
+    private pages: number
+    private page: number = this.value
+
+    @Watch('value')
+    public onValueChange() {
+        this.page = this.value
+    }
+    @Watch('page')
+    public onPageChange() {
+        this.$emit('input', this.page)
+    }
 }
 </script>
