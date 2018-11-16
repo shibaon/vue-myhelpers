@@ -12,9 +12,9 @@ import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 
 @Component
 export default class extends Vue {
-    @Prop
+    @Prop()
     private value: [string, 'asc'|'desc']
-    @Prop
+    @Prop()
     private cols: Array<[string, string]>
     private order = this.value
 
