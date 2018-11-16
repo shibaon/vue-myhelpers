@@ -16,7 +16,10 @@ export default class extends Vue {
     protected order: [string, 'asc'|'desc'] = ['id', 'desc']
 
     get pages() {
-            return Math.ceil(this.count / this.limit)
+        return Math.ceil(this.count / this.limit)
+    }
+    get offset() {
+        return this.limit * this.page
     }
 
     public created() {
