@@ -32,7 +32,7 @@ export default class Alerts extends Vue {
     private value
     private alerts = this.value
 
-    public beforeCreate() {
+    public created() {
         this.onAlertsChanged()
     }
 
