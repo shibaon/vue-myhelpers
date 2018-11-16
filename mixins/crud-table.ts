@@ -8,12 +8,12 @@ import { Vue, Component } from 'vue-property-decorator'
     },
 })
 export default class extends Vue {
-    protected cols = [['id', '#'], ['name', 'Add columns!!!']]
+    protected cols: Array<[string, string]> = [['id', '#'], ['name', 'Add columns!!!']]
     protected count = 0
     protected limit = 10
     protected page = this.$route.query.page ? parseInt(this.$route.query.page, 10) : 0
-    protected filter = this.$route.query.filter ? JSON.parse(this.$route.query.filter) : {},
-    protected order = [this.$route.query.ob ? this.$route.query.ob : 'id', this.$route.query.od ? this.$route.query.od : 'desc']
+    protected filter: { [key: string]: any } = this.$route.query.filter ? JSON.parse(this.$route.query.filter) : {}
+    protected order: [string, 'asc'|'desc'] = [this.$route.query.ob ? this.$route.query.ob : 'id', this.$route.query.od === 'asc' ? 'asc' : 'desc']
 
     get pages() {
             return Math.ceil(this.count / this.limit)
