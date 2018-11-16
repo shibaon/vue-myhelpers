@@ -15,6 +15,17 @@
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 
+/**
+ * Declaration for d.ts file
+ * 
+ * declare module 'vue/types/vue' {
+ *     interface Vue {
+ *         $alerts: Array<{ type: string, text: string, initialized?: boolean }>
+ *         $addAlert: (type: string, text: string) => void
+ *     }
+ * }
+ */
+
 @Component
 export default class Alerts extends Vue {
     private value
