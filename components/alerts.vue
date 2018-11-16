@@ -28,9 +28,13 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 
 @Component
 export default class Alerts extends Vue {
+    @Prop()
     private value
-    private alerts = this.$alerts
-    private counter = 0
+    private alerts = this.value
+
+    public beforeCreate() {
+        this.onAlertsChanged()
+    }
 
     @Watch('value')
     private onValueChanged() {
