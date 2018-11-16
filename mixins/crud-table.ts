@@ -1,4 +1,4 @@
-export default {
+export const CrudTable = {
     data() {
         return {
             cols: [['id', '#'], ['name', 'Add columns!!!']],
@@ -27,4 +27,14 @@ export default {
             this.$router.push({ path: this.$route.path, query: { ob: this.order[0], od: this.order[1], page: this.page, filter: JSON.stringify(this.filter) } })
         },
     },
+}
+export default CrudTable
+export interface ICrudTable {
+    cols: Array<[string, string]>
+    count: number
+    limit: number
+    page: number
+    filter: { [key: string]: string }
+    order: [string, 'asc'|'desc']
+    updateQuery: () => void
 }
