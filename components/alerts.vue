@@ -12,8 +12,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue, { VueConstructor } from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
+
+interface IAlert {
+    type: string
+    text: string
+    initialized?: boolean
+    hidding?: boolean
+}
 
 /**
  * Declaration for d.ts file
@@ -29,7 +36,7 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 @Component
 export default class Alerts extends Vue {
     @Prop()
-    private value
+    private value: Array<IAlert> = []
     private alerts = this.value
 
     public created() {
@@ -54,12 +61,12 @@ export default class Alerts extends Vue {
         }
     }
 
-    private remove(alert) {
+    private remove(alert: IAlert) {
         this.alerts.splice(this.alerts.indexOf(alert), 1)
         this.$emit('input', this.alerts)
     }
 
-    private close(alert) {
+    private close(alert: IAlert) {
         alert.hidding = true
         this.$set(this.alerts, this.alerts.indexOf(alert), alert)
         setTimeout(() => {
@@ -68,10 +75,10 @@ export default class Alerts extends Vue {
     }
 }
 
-export function install(Vue) {
+export function install(Vue: VueConstructor) {
     Vue.prototype.$alerts = []
-    Vue.prototype.$addAlert = function(type, text) {
-        if (!this.$alerts.find(item => item.type === type && item.text === text)) {
+    Vue.prototype.$addAlert = function(type: string, text: string) {
+        if (!this.$alerts.find((item: IAlert) => item.type === type && item.text === text)) {
             this.$alerts.push({type, text})
         }
     }
