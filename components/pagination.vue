@@ -1,31 +1,26 @@
 <template>
-<ul class="pagination pagination-sm">
-    <li :class="['page-item', page === 0 ? 'disabled' : '']" @click.prevent="page = 0"><button class="page-link">«</button></li>
-    <li :class="['page-item', page === 0 ? 'disabled' : '']" @click.prevent="page = Math.max(0, page - 1)"><button class="page-link">&lt;</button></li>
-    <li :class="['page-item', 'active']" @click.prevent=""><button disabled class="page-link">Page {{ page + 1 }} of {{ pages }}</button></li>
-    <li :class="['page-item', page === pages - 1 ? 'disabled' : '']" @click.prevent="page = Math.min(pages - 1, page + 1)"><button class="page-link">&gt;</button></li>
-    <li :class="['page-item', page === pages - 1 ? 'disabled' : '']" @click.prevent="page = pages - 1"><button class="page-link">»</button></li>
-</ul>
+<thead><tr><th v-for="c in cols" :key="c[0]">
+    <a v-if="c[0]" href="" @click.prevent="order = order[0] === c[0] ? ([c[0], order[1] === 'asc' ? 'desc' : 'asc']) : [c[0], order[1]]">{{ c[1] }}
+        <template v-if="order[0] === c[0]"><span v-if="order[1] === 'asc'">↓</span><span v-else>↑</span></template>
+    </a>
+    <template v-else>{{ c[1] }}</template>
+</th></tr></thead>
 </template>
 
 <script lang="ts">
-import { Vue, Prop, Component, Watch } from 'vue-property-decorator'
+import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 
 @Component
 export default class extends Vue {
     @Prop()
-    private value
+    private value: [string, 'asc'|'desc'] = ['id', 'desc']
     @Prop()
-    private pages: number
-    private page: number = this.value
+    private cols: Array<[string, string]> = []
+    private order = this.value
 
-    @Watch('value')
-    public onValueChange() {
-        this.page = this.value
-    }
-    @Watch('page')
-    public onPageChange() {
-        this.$emit('input', this.page)
+    @Watch('order')
+    onOrderChange() {
+        this.$emit('input', this.order)
     }
 }
 </script>
