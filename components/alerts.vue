@@ -36,7 +36,7 @@ interface IAlert {
 @Component
 export default class Alerts extends Vue {
     @Prop()
-    private value: Array<IAlert> = []
+    private value!: Array<IAlert>
     private alerts = this.value
 
     public created() {
