@@ -13,9 +13,9 @@ import { Component, Vue, Watch, Prop } from 'vue-property-decorator'
 @Component
 export default class extends Vue {
     @Prop()
-    private value: [string, 'asc'|'desc'] = ['id', 'desc']
+    private value!: [string, 'asc'|'desc']
     @Prop()
-    private cols: Array<[string, string]> = []
+    private cols!: Array<[string, string]>
     private order = this.value
 
     @Watch('order')
