@@ -8,7 +8,7 @@ import { Vue, Component } from 'vue-property-decorator'
     },
 })
 export default class extends Vue {
-    protected cols: Array<[string, string]> = [['id', '#'], ['name', 'Add columns!!!']]
+    protected cols: Array<[string|null, string]> = [['id', '#'], ['name', 'Add columns!!!']]
     protected count = 0
     protected limit = 10
     protected page = 0
