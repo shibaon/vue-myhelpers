@@ -23,9 +23,9 @@ export default class extends Vue {
     }
 
     public created() {
-        this.page = this.$route.query.page ? parseInt(this.$route.query.page, 10) : 0
-        this.filter = this.$route.query.filter ? JSON.parse(this.$route.query.filter) : {}
-        this.order = [this.$route.query.ob ? this.$route.query.ob : 'id', this.$route.query.od === 'asc' ? 'asc' : 'desc']
+        this.page = this.$route.query.page ? parseInt(this.$route.query.page as string, 10) : 0
+        this.filter = this.$route.query.filter ? JSON.parse(this.$route.query.filter as string) : {}
+        this.order = [this.$route.query.ob ? this.$route.query.ob as string : 'id', this.$route.query.od === 'asc' ? 'asc' : 'desc']
         this.updateQuery()
     }
 
