@@ -43,6 +43,16 @@ export default class Alerts extends Vue {
         this.onAlertsChanged()
     }
 
+    public static install(Vue: VueConstructor) {
+        Vue.prototype.$alerts = []
+        Vue.prototype.$addAlert = function(type: string, text: string) {
+            if (!this.$alerts.find((item: IAlert) => item.type === type && item.text === text)) {
+                this.$alerts.push({type, text})
+            }
+        }
+        Vue.component('alerts', Alerts)
+    }
+
     @Watch('value')
     private onValueChanged() {
         this.alerts = this.value
@@ -73,16 +83,6 @@ export default class Alerts extends Vue {
             this.remove(alert)
         }, 1000)
     }
-}
-
-export function install(Vue: VueConstructor) {
-    Vue.prototype.$alerts = []
-    Vue.prototype.$addAlert = function(type: string, text: string) {
-        if (!this.$alerts.find((item: IAlert) => item.type === type && item.text === text)) {
-            this.$alerts.push({type, text})
-        }
-    }
-    Vue.component('alerts', Alerts)
 }
 </script>
 
