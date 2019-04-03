@@ -1,6 +1,6 @@
 <template>
     <div class="alerts">
-        <div v-for="alert in alerts" v-bind:key="alert.type + alert.text"
+        <div v-for="alert in alerts" v-bind:key=alert.id
             :class="['alert', 'alert-' + alert.type, alert.hidding ? 'hidding' : '']"
         >
             {{ alert.text }}
@@ -15,47 +15,40 @@
 import Vue, { VueConstructor } from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator'
 
-interface IAlert {
+export declare interface IAlert {
+    id: number
     type: string
     text: string
     initialized?: boolean
     hidding?: boolean
 }
 
-/**
- * Declaration for d.ts file
- * 
- * declare module 'vue/types/vue' {
- *     interface Vue {
- *         $alerts: Array<{ type: string, text: string, initialized?: boolean }>
- *         $addAlert: (type: string, text: string) => void
- *     }
- * }
- */
+declare module 'vue/types/vue' {
+    interface Vue { 
+        $alerts: IAlert[]
+        $addAlert: (type: string, text: string) => void
+    }
+}
 
 @Component
 export default class Alerts extends Vue {
     @Prop()
-    private value!: Array<IAlert>
-    private alerts = this.value
+    private value!: IAlert[]
+    private alerts: IAlert[] = []
 
-    public created() {
-        this.onAlertsChanged()
+    @Watch('value', { immediate: true })
+    public onValueChange() {
+        this.alerts = this.value ? this.value : this.$alerts
     }
 
     public static install(Vue: VueConstructor) {
         Vue.prototype.$alerts = []
-        Vue.prototype.$addAlert = function(type: string, text: string) {
+        Vue.prototype.$addAlert = function(this: Vue, type: string, text: string) {
             if (!this.$alerts.find((item: IAlert) => item.type === type && item.text === text)) {
-                this.$alerts.push({type, text})
+                this.$alerts.push({ id: Math.random() * 10000000, type, text})
             }
         }
         Vue.component('alerts', Alerts)
-    }
-
-    @Watch('value')
-    private onValueChanged() {
-        this.alerts = this.value
     }
 
     @Watch('alerts')
@@ -76,11 +69,11 @@ export default class Alerts extends Vue {
         this.$emit('input', this.alerts)
     }
 
-    private close(alert: IAlert) {
-        alert.hidding = true
-        this.$set(this.alerts, this.alerts.indexOf(alert), alert)
+    private close(alrt: IAlert) {
+        alrt.hidding = true
+        this.$set(this.alerts, this.alerts.indexOf(alrt), alrt)
         setTimeout(() => {
-            this.remove(alert)
+            this.remove(alrt)
         }, 1000)
     }
 }
