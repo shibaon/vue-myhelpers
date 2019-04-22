@@ -30,6 +30,6 @@ export default class extends Vue {
     }
 
     public updateQuery() {
-        this.$router.push({ path: this.$route.path, query: { ob: this.order[0], od: this.order[1], page: this.page, filter: JSON.stringify(this.filter) } } as any)
+        this.$router.replace({ path: this.$route.path, query: { ob: this.order[0], od: this.order[1], page: this.page, filter: JSON.stringify(this.filter) } } as any)
     }
 }
