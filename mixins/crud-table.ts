@@ -1,12 +1,6 @@
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Watch } from 'vue-property-decorator'
 
-@Component({
-    watch: {
-        order: 'updateQuery',
-        page: 'updateQuery',
-        filter: 'updateQuery',
-    },
-})
+@Component
 export default class extends Vue {
     protected cols: Array<[string|null, string]> = [['id', '#'], ['name', 'Add columns!!!']]
     protected count = 0
@@ -29,6 +23,9 @@ export default class extends Vue {
         this.updateQuery()
     }
 
+    @Watch('page')
+    @Watch('filter', { deep: true })
+    @Watch('order')
     public updateQuery() {
         this.$router.replace({ path: this.$route.path, query: { ob: this.order[0], od: this.order[1], page: this.page, filter: JSON.stringify(this.filter) } } as any)
     }
